@@ -11,4 +11,16 @@ public class Venue {
 
     @SerializedName("name") @Expose
     public String name;
+
+    @SerializedName("rating") @Expose
+    public String rating;
+
+    @SerializedName("ratingColor") @Expose
+    public String ratingColor;
+
+    public boolean hasRating() {
+        return rating != null && !rating.isEmpty()
+                && ratingColor != null && !ratingColor.isEmpty();
+    }
+
 }

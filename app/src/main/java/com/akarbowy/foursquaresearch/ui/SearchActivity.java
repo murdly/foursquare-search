@@ -3,6 +3,7 @@ package com.akarbowy.foursquaresearch.ui;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -49,11 +50,17 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 .inject(this);
 
 
-        adapter = new VenuesAdapter();
-        list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter);
+        setupList();
 
         setupSearchBar();
+    }
+
+    private void setupList() {
+        adapter = new VenuesAdapter();
+        list.addItemDecoration(new DividerItemDecoration(list.getContext(),
+                DividerItemDecoration.VERTICAL));
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(adapter);
     }
 
     private void setupSearchBar() {

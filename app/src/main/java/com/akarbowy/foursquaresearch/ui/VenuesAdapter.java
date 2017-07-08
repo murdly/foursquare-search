@@ -1,6 +1,7 @@
 package com.akarbowy.foursquaresearch.ui;
 
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,8 @@ public class VenuesAdapter extends RecyclerView.Adapter<VenuesAdapter.VenuesView
     @Override public void onBindViewHolder(VenuesViewHolder holder, int position) {
         Venue venue = items.get(position).venue;
 
+        holder.ratingView.setText(venue.hasRating() ? venue.rating : "0.0");
+        holder.ratingView.setBackgroundColor(venue.hasRating() ? Color.parseColor("#" + venue.ratingColor) : Color.LTGRAY);
         holder.textView.setText(venue.name);
     }
 
@@ -47,6 +50,7 @@ public class VenuesAdapter extends RecyclerView.Adapter<VenuesAdapter.VenuesView
 
     static class VenuesViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.rating_view) TextView ratingView;
         @BindView(R.id.text_view) TextView textView;
 
         public VenuesViewHolder(View itemView) {
