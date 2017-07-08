@@ -32,13 +32,18 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void search(String query) {
+        view.setLoading(true);
+
         service.search(query, location)
                 .enqueue(new Callback<FoursquareResponse>() {
                     @Override public void onResponse(Call<FoursquareResponse> call, Response<FoursquareResponse> response) {
+                        view.setLoading(false);
+
                         if (response.isSuccessful()) {
                             List<Group> group = response.body().response.groups;
                             List<VenueItem> venues = group.get(0).items;
 
+                            view.setLoading(false);
                             view.setVenues(venues);
                             Log.d("FQ", "onResponse");
                         } else {
@@ -47,6 +52,8 @@ public class SearchPresenter implements SearchContract.Presenter {
                     }
 
                     @Override public void onFailure(Call<FoursquareResponse> call, Throwable t) {
+                        view.setLoading(false);
+
                         Log.d("FQ", "onFailure" + t.getMessage());
                     }
                 });

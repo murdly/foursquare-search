@@ -3,4 +3,5 @@
 
     //Search screen
     <string name="search_hint">Search…</string>
+    <string name="search_suggestion">Search for:</string>
 </resources>

@@ -9,6 +9,8 @@ public interface SearchContract {
 
     interface View {
         void setVenues(List<VenueItem> venues);
+
+        void setLoading(boolean isLoading);
     }
 
     interface Presenter {
