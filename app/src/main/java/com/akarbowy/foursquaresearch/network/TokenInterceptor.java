@@ -13,8 +13,8 @@ public class TokenInterceptor implements Interceptor {
         Request original = chain.request();
 
         HttpUrl authUrl = original.url().newBuilder()
-                .addQueryParameter("oauth_token", "4Q2OI3GCARGO2OD3VZF4EPUAL2RUX0IGB0SISOHIGMJVG2UN")
-                .addQueryParameter("v","20170707")
+                .addQueryParameter("oauth_token", "KBZC0M4NG1R2ASQKICPUZVOBNEL1PMABM3IEQKOH3J3LJEQS")
+                .addQueryParameter("v","20170708")
                 .build();
 
         Request authorized = original.newBuilder()

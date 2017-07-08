@@ -24,6 +24,9 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         DaggerSearchActivityComponent.builder()
                 .appComponent(((App) getApplication()).getComponent())
                 .searchActivityModule(new SearchActivityModule(this))
-                .build();
+                .build()
+                .inject(this);
+
+        presenter.search("the");
     }
 }
