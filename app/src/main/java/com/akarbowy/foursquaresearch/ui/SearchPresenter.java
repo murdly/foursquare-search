@@ -1,71 +1,49 @@
 package com.akarbowy.foursquaresearch.ui;
 
 
-import com.akarbowy.foursquaresearch.network.FoursquareResponse;
-import com.akarbowy.foursquaresearch.network.FoursquareService;
-import com.akarbowy.foursquaresearch.network.model.VenueItem;
+import com.akarbowy.foursquaresearch.data.DataSource;
+import com.akarbowy.foursquaresearch.data.model.VenueItem;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class SearchPresenter implements SearchContract.Presenter {
 
     private SearchContract.View view;
 
-    private FoursquareService service;
-
-    private String location = "london gb";
+    private DataSource dataSource;
 
     @Inject
-    public SearchPresenter(SearchContract.View view, FoursquareService service) {
+    public SearchPresenter(SearchContract.View view, DataSource dataSource) {
         this.view = view;
-        this.service = service;
+        this.dataSource = dataSource;
     }
 
     @Override
     public void search(String query) {
         view.setLoading(true);
 
-        service.search(query, location)
-                .enqueue(new Callback<FoursquareResponse>() {
-                    @Override public void onResponse(Call<FoursquareResponse> call, Response<FoursquareResponse> response) {
-                        if (!view.isActive()){
-                            return;
-                        }
+        dataSource.loadVenues(query, new DataSource.GetVenuesCallback() {
+            @Override public void onDataLoaded(List<VenueItem> data) {
+                if (!view.isActive()){
+                    return;
+                }
+                view.setLoading(false);
 
-                        view.setLoading(false);
+                view.setVenues(data);
+                view.setEmptyState(data.isEmpty());
+            }
 
-                        if (response.isSuccessful()) {
-                            handleResponse(response.body());
-                        } else {
-                            view.showError();
-                        }
-                    }
+            @Override public void onDataNotAvailable() {
+                if (!view.isActive()){
+                    return;
+                }
 
-                    @Override public void onFailure(Call<FoursquareResponse> call, Throwable t) {
-                        if (!view.isActive()){
-                            return;
-                        }
-
-                        view.setLoading(false);
-                        view.showError();
-                    }
-                });
+                view.setLoading(false);
+                view.showError();
+            }
+        });
     }
 
-    private void handleResponse(FoursquareResponse body){
-        if(body == null) {
-            return;
-        }
-
-        List<VenueItem> venues = body.response.getVenues();
-
-        view.setVenues(venues);
-        view.setEmptyState(venues.isEmpty());
-    }
 }

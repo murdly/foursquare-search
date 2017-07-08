@@ -1,7 +1,7 @@
 package com.akarbowy.foursquaresearch.ui;
 
 
-import com.akarbowy.foursquaresearch.network.model.VenueItem;
+import com.akarbowy.foursquaresearch.data.model.VenueItem;
 
 import java.util.List;
 

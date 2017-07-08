@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.akarbowy.foursquaresearch.App;
 import com.akarbowy.foursquaresearch.R;
-import com.akarbowy.foursquaresearch.network.model.VenueItem;
+import com.akarbowy.foursquaresearch.data.model.VenueItem;
 import com.akarbowy.foursquaresearch.utils.ConnectionUtil;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;

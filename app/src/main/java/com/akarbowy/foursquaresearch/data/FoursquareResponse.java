@@ -1,8 +1,8 @@
-package com.akarbowy.foursquaresearch.network;
+package com.akarbowy.foursquaresearch.data;
 
 
-import com.akarbowy.foursquaresearch.network.model.Meta;
-import com.akarbowy.foursquaresearch.network.model.Response;
+import com.akarbowy.foursquaresearch.data.model.Meta;
+import com.akarbowy.foursquaresearch.data.model.Response;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

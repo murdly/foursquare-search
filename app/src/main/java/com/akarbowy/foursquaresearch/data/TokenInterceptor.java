@@ -1,4 +1,4 @@
-package com.akarbowy.foursquaresearch.network;
+package com.akarbowy.foursquaresearch.data;
 
 
 import java.io.IOException;

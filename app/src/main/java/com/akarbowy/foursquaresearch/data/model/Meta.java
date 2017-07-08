@@ -1,4 +1,4 @@
-package com.akarbowy.foursquaresearch.network.model;
+package com.akarbowy.foursquaresearch.data.model;
 
 
 import com.google.gson.annotations.Expose;

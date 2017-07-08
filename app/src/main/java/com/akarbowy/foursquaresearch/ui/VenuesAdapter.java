@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akarbowy.foursquaresearch.R;
-import com.akarbowy.foursquaresearch.network.model.Venue;
-import com.akarbowy.foursquaresearch.network.model.VenueItem;
+import com.akarbowy.foursquaresearch.data.model.Venue;
+import com.akarbowy.foursquaresearch.data.model.VenueItem;
 
 import java.util.ArrayList;
 import java.util.List;
