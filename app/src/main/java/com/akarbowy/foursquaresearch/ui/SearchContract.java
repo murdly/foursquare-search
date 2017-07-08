@@ -8,9 +8,15 @@ import java.util.List;
 public interface SearchContract {
 
     interface View {
+        boolean isActive();
+
         void setVenues(List<VenueItem> venues);
 
         void setLoading(boolean isLoading);
+
+        void setEmptyState(boolean visible);
+
+        void showError();
     }
 
     interface Presenter {

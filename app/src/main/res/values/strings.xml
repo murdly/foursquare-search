@@ -4,4 +4,7 @@
     //Search screen
     <string name="search_hint">Search…</string>
     <string name="search_suggestion">Search for:</string>
+    <string name="error_no_internet_connection">Network is unavailable</string>
+    <string name="error_general">Sorry, something went wrong</string>
+    <string name="empty_state_msg">No results</string>
 </resources>

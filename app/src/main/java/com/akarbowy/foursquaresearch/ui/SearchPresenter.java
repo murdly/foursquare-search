@@ -1,11 +1,8 @@
 package com.akarbowy.foursquaresearch.ui;
 
 
-import android.util.Log;
-
 import com.akarbowy.foursquaresearch.network.FoursquareResponse;
 import com.akarbowy.foursquaresearch.network.FoursquareService;
-import com.akarbowy.foursquaresearch.network.model.Group;
 import com.akarbowy.foursquaresearch.network.model.VenueItem;
 
 import java.util.List;
@@ -37,25 +34,38 @@ public class SearchPresenter implements SearchContract.Presenter {
         service.search(query, location)
                 .enqueue(new Callback<FoursquareResponse>() {
                     @Override public void onResponse(Call<FoursquareResponse> call, Response<FoursquareResponse> response) {
+                        if (!view.isActive()){
+                            return;
+                        }
+
                         view.setLoading(false);
 
                         if (response.isSuccessful()) {
-                            List<Group> group = response.body().response.groups;
-                            List<VenueItem> venues = group.get(0).items;
-
-                            view.setLoading(false);
-                            view.setVenues(venues);
-                            Log.d("FQ", "onResponse");
+                            handleResponse(response.body());
                         } else {
-                            Log.d("FQ", "onResponse fail");
+                            view.showError();
                         }
                     }
 
                     @Override public void onFailure(Call<FoursquareResponse> call, Throwable t) {
-                        view.setLoading(false);
+                        if (!view.isActive()){
+                            return;
+                        }
 
-                        Log.d("FQ", "onFailure" + t.getMessage());
+                        view.setLoading(false);
+                        view.showError();
                     }
                 });
+    }
+
+    private void handleResponse(FoursquareResponse body){
+        if(body == null) {
+            return;
+        }
+
+        List<VenueItem> venues = body.response.getVenues();
+
+        view.setVenues(venues);
+        view.setEmptyState(venues.isEmpty());
     }
 }

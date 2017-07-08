@@ -27,6 +27,7 @@ public class VenuesAdapter extends RecyclerView.Adapter<VenuesAdapter.VenuesView
     }
 
     public void addItems(List<VenueItem> venues) {
+        items.clear();
         items.addAll(venues);
         notifyDataSetChanged();
     }
@@ -39,7 +40,7 @@ public class VenuesAdapter extends RecyclerView.Adapter<VenuesAdapter.VenuesView
     @Override public void onBindViewHolder(VenuesViewHolder holder, int position) {
         Venue venue = items.get(position).venue;
 
-        holder.ratingView.setText(venue.hasRating() ? venue.rating : "0.0");
+        holder.ratingView.setText(venue.hasRating() ? venue.rating : "?");
         holder.ratingView.setBackgroundColor(venue.hasRating() ? Color.parseColor("#" + venue.ratingColor) : Color.LTGRAY);
         holder.textView.setText(venue.name);
     }

@@ -2,6 +2,7 @@ package com.akarbowy.foursquaresearch.ui;
 
 import android.os.Bundle;
 import android.os.Parcel;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,10 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akarbowy.foursquaresearch.App;
 import com.akarbowy.foursquaresearch.R;
 import com.akarbowy.foursquaresearch.network.model.VenueItem;
+import com.akarbowy.foursquaresearch.utils.ConnectionUtil;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.SearchSuggestionsAdapter;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
@@ -31,11 +34,14 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     FloatingSearchView searchView;
     @BindView(R.id.list)
     RecyclerView list;
+    @BindView(R.id.empty_state_view)
+    View view;
 
     @Inject
     SearchPresenter presenter;
 
-    VenuesAdapter adapter;
+    private VenuesAdapter adapter;
+    private boolean isViewActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +55,22 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                 .build()
                 .inject(this);
 
-
         setupList();
-
         setupSearchBar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isViewActive = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isViewActive = false;
+
+        searchView.clearSearchFocus();
     }
 
     private void setupList() {
@@ -99,12 +117,13 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
         searchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
-
                 onSearchQuery(searchSuggestion.getBody());
             }
 
             @Override public void onSearchAction(final String currentQuery) {
-                onSearchQuery(currentQuery);
+                if(!currentQuery.isEmpty()){
+                    onSearchQuery(currentQuery);
+                }
             }
         });
     }
@@ -113,11 +132,27 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         searchView.clearSearchFocus();
         searchView.clearSuggestions();
 
-        presenter.search(query);
+        if(ConnectionUtil.isNetworkAvailable(this)){
+            presenter.search(query);
+        } else {
+            Toast.makeText(this, getString(R.string.error_no_internet_connection), Toast.LENGTH_SHORT).show();
+        }
     }
 
+    @Override
+    public boolean isActive() {
+        return isViewActive;
+    }
 
-    @Override public void setLoading(boolean isLoading) {
+    @Override
+    public void setVenues(List<VenueItem> venues) {
+        searchView.hideProgress();
+
+        adapter.addItems(venues);
+    }
+
+    @Override
+    public void setLoading(boolean isLoading) {
         if (isLoading) {
             searchView.showProgress();
         } else {
@@ -125,11 +160,11 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         }
     }
 
-    @Override public void setVenues(List<VenueItem> venues) {
-        searchView.hideProgress();
-
-        adapter.addItems(venues);
+    @Override public void setEmptyState(boolean visible) {
+        view.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-
+    @Override public void showError() {
+        Snackbar.make(list, getString(R.string.error_general), Snackbar.LENGTH_SHORT).show();
+    }
 }
