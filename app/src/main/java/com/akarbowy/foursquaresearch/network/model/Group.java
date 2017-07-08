@@ -9,5 +9,5 @@ import java.util.List;
 public class Group {
 
     @SerializedName("items") @Expose
-    public List<GroupItem> items;
+    public List<VenueItem> items;
 }

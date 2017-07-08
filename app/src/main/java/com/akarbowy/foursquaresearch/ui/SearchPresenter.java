@@ -6,7 +6,7 @@ import android.util.Log;
 import com.akarbowy.foursquaresearch.network.FoursquareResponse;
 import com.akarbowy.foursquaresearch.network.FoursquareService;
 import com.akarbowy.foursquaresearch.network.model.Group;
-import com.akarbowy.foursquaresearch.network.model.GroupItem;
+import com.akarbowy.foursquaresearch.network.model.VenueItem;
 
 import java.util.List;
 
@@ -37,8 +37,10 @@ public class SearchPresenter implements SearchContract.Presenter {
                     @Override public void onResponse(Call<FoursquareResponse> call, Response<FoursquareResponse> response) {
                         if (response.isSuccessful()) {
                             List<Group> group = response.body().response.groups;
-                            List<GroupItem> item = group.get(0).items;
-                            Log.d("FQ", "onResponse" + item.get(0).venue.name);
+                            List<VenueItem> venues = group.get(0).items;
+
+                            view.setVenues(venues);
+                            Log.d("FQ", "onResponse");
                         } else {
                             Log.d("FQ", "onResponse fail");
                         }
