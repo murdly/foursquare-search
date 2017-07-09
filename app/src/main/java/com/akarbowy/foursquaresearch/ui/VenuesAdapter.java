@@ -34,7 +34,7 @@ public class VenuesAdapter extends RecyclerView.Adapter<VenuesAdapter.VenuesView
 
     @Override public VenuesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new VenuesViewHolder(inflater.inflate(R.layout.list_item_venue, null));
+        return new VenuesViewHolder(inflater.inflate(R.layout.list_item_venue, parent, false));
     }
 
     @Override public void onBindViewHolder(VenuesViewHolder holder, int position) {
